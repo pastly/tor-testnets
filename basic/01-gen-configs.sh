@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 set -eu
 
-which tor || exit 1
-which tor-gencert || exit 1
-
 source 00-common.sh
+
+which $tor_bin || exit 1
+which $tor_gencert_bin || exit 1
 
 function get_fingerprint {
 	dir=$1
 	[ -f $dir/torrc ] || exit 2
-	tor --ignore-missing-torrc -f $dir/torrc  --Address 8.8.8.8 \
+	$tor_bin --ignore-missing-torrc -f $dir/torrc  --Address 8.8.8.8 \
 		--list-fingerprint | tail -n 1 | cut -d ' ' -f 2- \
 		| sed 's|\ ||g'
 }
@@ -45,7 +45,7 @@ do
 	orport=$((next_auth_port+0))
 	dirport=$((next_auth_port+1))
     next_auth_port=$((next_auth_port+2))
-	echo -n '' | tor-gencert --create-identity-key --passphrase-fd 0 -m 24 -a $ip:$dirport
+	echo -n '' | $tor_gencert_bin --create-identity-key --passphrase-fd 0 -m 24 -a $ip:$dirport
 	echo "
 %include torrc-common
 DataDirectory $A
