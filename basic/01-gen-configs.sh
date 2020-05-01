@@ -50,7 +50,6 @@ do
 %include torrc-common
 DataDirectory $A
 PidFile $A/tor.pid
-#Log notice file $A/notice.log
 Address $ip
 SocksPort 0
 ControlPort 0
