@@ -89,6 +89,22 @@ CacheDirectory $tmp_dir/$A
 " > $A/torrc
 done
 
+for A in client1
+do
+    mkdir -pv $A
+    chmod 700 $A
+    echo "
+%include torrc-common
+DataDirectory $A
+PidFile $A/tor.pid
+Log notice file $A/notice.log
+SocksPort auto
+ControlPort 4545
+ControlSocket $(pwd)/$A/control_socket
+CookieAuthentication 0
+" > $A/torrc
+done
+
 echo "TestingTorNetwork 1" >> torrc-common
 echo "
 AuthoritativeDirectory 1
